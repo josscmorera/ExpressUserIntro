@@ -61,6 +61,31 @@ app.post('/new-user', (req, res) => {
     res.status(200).json({ message: "Success" });
 });
 
+// Put update user
+app.put('/update-user/:email', (req, res) => {
+    const email = req.params.email;
+    const findIndex = usersList.findIndex(user => user.email === email);
+
+    if (findIndex === -1) {
+        return res.status(400).json({ success: false, message: 'User not found' });
+    }
+
+    const user = usersList[findIndex];
+    const updatedUserInfo = { ...user };
+
+    for (let key in req.body) {
+        if (req.body[key]) {
+            updatedUserInfo[key] = req.body[key];
+        }
+    }
+
+    usersList.splice(findIndex, 1, updatedUserInfo);
+
+    console.log(updatedUserInfo);
+    res.status(200).json({ message: 'Success' });
+});
+
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
