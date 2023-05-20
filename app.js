@@ -85,6 +85,18 @@ app.put('/update-user/:email', (req, res) => {
     res.status(200).json({ message: 'Success' });
 });
 
+// Delete user
+app.delete('/delete-user/:cellNumber', (req, res) => {
+    const cellNumber = req.params.cellNumber;
+    const userIndex = usersList.findIndex(user => user.cell === cellNumber);
+
+    if (userIndex !== -1) {
+        usersList.splice(userIndex, 1);
+        res.status(200).send({ success: true });
+    } else {
+        res.status(404).send({ success: false, message: 'User not found' });
+    }
+});
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
